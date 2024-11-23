@@ -332,7 +332,7 @@ constructor(container: HTMLElement, protected events: IEvents)
 - _button - кнопка добавления в корзину.
 - _buttonDelete - кнопка удаления из корзины.
 
-Добавляются случатели собития на кнопку.
+Добавляются случатели события на кнопку.
 
 ```
 constructor(container: HTMLElement, protected events: IEvents)
