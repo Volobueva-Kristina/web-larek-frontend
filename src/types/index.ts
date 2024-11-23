@@ -7,16 +7,17 @@ export interface IProduct {
   price: number;
 }
 
-export interface IErrorMessage {
-  error: string;
+export interface IProductsData {
+  items: IProduct[];
+  getCards(): IProduct[];
 }
 
-interface IContacts {
+export interface IContacts {
 	email: string;
 	phone: string;
 }
 
-interface IOrderPayment {
+export interface IOrderPayment {
 	payment: string;
   address: string;
 }
@@ -31,9 +32,57 @@ export interface IOrderResult {
   total: number;
 }
 
-export interface OrderPaidEvent {
-  orderId: string;
-  paymentStatus: boolean;
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
+
+export interface IBasket {
+  items: IProduct[];
+  totalPrice: number | null;
+}
+
+export interface IPage {
+  items: IProduct[];
+  counter: number;
+}
+
+export interface IProductData{
+  items: IProduct[];
+  preview: string | null;
+
+  getCard(id: string): IProduct;
+  getProductsList(): IProduct[];
+}
+
+export interface IBasketData{
+  addtoBasket(id: string): void;
+  removeFromBasket(id: string): void;
+  getProductsList(): IProduct[];
+  clearBasket(): void;
+  updateBasket(basket: IBasket): void;
+  getTotalPrice(): number | null;
+  setProductsList(products: IProduct[]): void;
+  getStatusAddingToBasket(id: string): boolean;
+}
+
+export interface IUserData{
+  getUserContacts(): IContacts;
+  getUserPayment(): IOrderPayment;
+
+  setUserContacts(userData: IContacts): void;
+  setUserPayment(userData: IOrderPayment): void;
+
+  checkUserValidationContacts(data: Record<keyof IContacts, string>): boolean;
+  checkUserValidationPayment(data: Record<keyof IOrderPayment, string>): boolean;
+}
+
+export interface IPageData{
+  setCounter(value: number): void;
+  setProductList(items: IProduct[]): void;
+}
+
+export interface IProductAPI {
+	getProductList: () => Promise<IProduct[]>;
+	getProduct: (id: string) => Promise<IProduct>;
+	orderProduct: (order: IOrder) => Promise<IOrderResult>;
 }
 
 export interface IEventEmitter {
@@ -46,130 +95,4 @@ export interface IViewConstructor {
 
 export interface IView {
   render(data?: object): HTMLElement;
-}
-
-// Реализация типов данных АПИ и модели
-export interface IApiListResponse<T> {
-  total: number;
-  items: T[];
-}
-
-export interface IProductAPI {
-	getProductList: () => Promise<IApiListResponse<IProduct>>;
-	getProduct: (id: string) => Promise<IProduct>;
-	orderProduct: (order: IOrder) => Promise<IOrderResult[]>;
-}
-
-// Формируем тип данных для модели данных
-export interface AppState {
-	product: IProduct;
-	productList: IApiListResponse<IProduct>;
-
-	selectedProduct: IProduct | null;
-	basket: Map<string, number>;
-	basketTotal: number;
-	contacts: IContacts;
-	order: IOrderPayment;
-
-  errorMessage: IErrorMessage;
-
-  getProductList: () => Promise<IApiListResponse<IProduct>>;
-	getProduct: (id: string) => Promise<IProduct>;
-	orderProduct: (order: IOrder) => Promise<IOrderResult[]>;
-
-	restoreState(): void;
-	persistState(): void;
-
-	addProduct(product: IProduct): void;
-	removeProduct(id: string): void;
-  fillAddres(contacts: IContacts): void;
-	fillContacts(contacts: IContacts): void;
-	isValidContacts(): boolean;
-  isValidAddress(): boolean;
-  OrderPaid(): void;
-}
-
-export interface IBasketModel {
-  items: Map<string, number>;
-  price: number | null;
-
-  add(id: string): void;
-  remove(id: string): void;
-}
-
-export interface ICatalogModel {
-  items: IProduct[];
-
-  setItems(items: IProduct[]): void;
-  getProduct(id: string): IProduct;
-}
-
-// типы данных для отображений
-export interface IProductCardUI {
-  id: string;
-  description: string;
-  image: string;
-  title: string;
-  category: string;
-  price: number;
-}
-
-export interface IProductCardSetting {
-  description: string;
-  image: string;
-  title: string;
-  category: string;
-  price: number;
-
-  itemClass: string;
-  compactClass: string;
-  activeItemClass: string;
-  isCompact: boolean;
-}
-
-export interface IBasketOnPageUI {
-  counter: HTMLSpanElement;
-}
-
-export interface IBasketOnPageSetting {
-  counterText: string;
-}
-
-export interface IBasketSetting {
-  itemIndex: string;
-  title: string;
-  price: string;
-  delete: string;
-}
-
-export interface IGallery {
-  items: HTMLUListElement;
-}
-
-export interface ISuccessUI {
-  image: string;
-  title: string;
-  description: string;
-}
-
-export interface ISuccessSetting {
-  background: string;
-  title: string;
-  description: string;
-}
-
-export interface IModalUI {
-  content: string;
-	messageErrorClass: string;
-  isOpen: boolean;
-
-  onClose: () => void;
-}
-
-export interface IModalSetting {
-  close: string;
-  content: string;
-  message: string;
-  activeClass: string;
-	messageErrorClass: string;
 }
