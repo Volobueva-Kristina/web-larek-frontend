@@ -181,7 +181,7 @@ protected constructor(protected readonly container: HTMLElement)
 Методы для взаимодействия с данными:
 - `getCard` - возвращает карточку по id;
 - `getProductsList` - получает список товаров;
-- `setPreview` - выбор карточки для отображения в можальном окне;
+- `setPreview` - выбор карточки для отображения в модальном окне;
 - а так же сеттеры и геттеры для сохранения и получения данных из полей класса.
 
 #### Класс BasketData
@@ -209,8 +209,8 @@ protected constructor(protected readonly container: HTMLElement)
 Методы для взаимодействия с данными:
 - `getUserContacts` - получает контакты пользователя: телефон и электронную почту;
 - `getUserPayment` - получает контакты пользователя: способ оплаты и адрес;
-- `setOrderField` и `setContactsField` - изменение полей ввода;
-- `validateOrder` и `validateContacts` - проверяет объект с данными пользователя на валидность;
+- `setOrderField` и `setContactsField` - обновляет одно из полей, проверяет валидность данных с помощью метода validateOrder() и, если проверка прошла успешно, отправляет событие 'order:ready';
+- `validateOrder` и `validateContacts` - проверяет корректность введенных данных;
 - а так же сеттеры и геттеры для сохранения и получения данных из полей класса.
 
 ### Классы представления
@@ -234,7 +234,7 @@ constructor(container: HTMLFormElement, protected events: IEvents)
 - events: IEvents - брокер событий.
 
 #### Класс Form
-Класс Form - расширяет класс Component и является абстрактным классом. Устанавливает слушатель на изменение значений полей. С
+Класс Form - расширяет класс Component и является абстрактным классом. Устанавливает слушатель на изменение значений полей.
 
 ```
 constructor(protected container: HTMLFormElement, protected events: IEvents)
@@ -245,7 +245,7 @@ constructor(protected container: HTMLFormElement, protected events: IEvents)
 - _errors: HTMLElement;
 
 Методы:
-- `onInputChange` - добавляет телефон
+- `onInputChange` - отвечает за обработку изменения значения в одном из полей формы
 - `render` - рендер переданных элементов
 - `set valid` - изменяет активность кнопки подтверждения
 - `set errors` - устанавливает текст ошибки
@@ -268,8 +268,8 @@ constructor(container: HTMLFormElement, protected events: EventEmitter)
 constructor(protected container: HTMLFormElement, protected events: IEvents)
 ```
 Данные полей класса:
-- _cardButton: кнопка выбора способо оплаты картой
-- _cashButton: кнопка выбора способо оплаты наличными
+- _cardButton: кнопка выбора способа оплаты картой
+- _cashButton: кнопка выбора способа оплаты наличными
 - _addressInput: инпут адреса.
 
 Методы:
@@ -367,8 +367,8 @@ Page - реализует главную страницу.
 - `preview:changed` - Открыть выбранную карточку
 - `basket:change` - изменение данных в корзине.
 - `catalogCards:change` - изменение каталога товаров, заполнение каталога на главной странице
-- `order:ready` и `contacts:ready` - валидация полей формы
-- `orderFormErrors:change` и `contactsFormErrors:change` - Изменилось состояние валидации формы
+- `order:ready` и `contacts:ready` - возникает, когда информация о заказе была успешно заполнена пользователем и прошла валидацию
+- `orderFormErrors:change` и `contactsFormErrors:change` - возникает, когда происходит изменение списка ошибок в форме заказа
 
 *события возникающие при взаимодействии пользователя с интерфейсом (генерируются классами отвечающими за представление)*
 - `basket:remove` - удаление карточки из корзины
