@@ -11,6 +11,7 @@ import {
 	IUserData,
 	IBasket,
 	TFormInfo,
+	IBasketData
 } from '../types';
 
 export class ProductData implements IProductData {
@@ -31,11 +32,11 @@ export class ProductData implements IProductData {
 		this.events.emit('catalogCards:change', { _items: this._items });
 	}
 
-	getProductsList() {
+	getProductsList(): IProduct[] {
 		return this._items;
 	}
 
-	getCard(id: string) {
+	getCard(id: string): IProduct {
 		return this._items.find((card) => card.id === id) || null;
 	}
 
@@ -43,17 +44,6 @@ export class ProductData implements IProductData {
 		this._preview = item.id;
 		this.events.emit('preview:changed', item);
 	}
-}
-
-interface IBasketData {
-	basket: IBasket;
-	addtoBasket(item: IProduct): void;
-	removeFromBasket(item: IProduct): void;
-	getProductsList(): IProduct[];
-	clearBasket(): void;
-	updateBasket(basket: IBasket): void;
-	getTotalPrice(): number | null;
-	getStatusAddingToBasket(item: IProduct): boolean;
 }
 
 export class BasketData implements IBasketData {
@@ -71,7 +61,6 @@ export class BasketData implements IBasketData {
 			this.basket.items.push(item);
 			this.basket.totalPrice += item.price;
 			this.events.emit('basket:change', this.basket);
-			this.events.emit('cardPreview:changed');
 		}
 	}
 
@@ -81,7 +70,6 @@ export class BasketData implements IBasketData {
 			this.basket.items.splice(itemIndex, 1);
 			this.basket.totalPrice -= item.price;
 			this.events.emit('basket:change', this.basket);
-			this.events.emit('cardPreview:changed');
 		}
 	}
 

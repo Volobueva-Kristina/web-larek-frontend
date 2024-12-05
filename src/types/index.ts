@@ -6,7 +6,6 @@ export interface IProduct {
 	category: string;
 	price: number;
 	indexInBasket?: string;
-	button?: string;
 }
 
 export interface IProductsData {
@@ -66,4 +65,15 @@ export type TFormInfo = Pick<IOrder, 'payment' | 'address' | 'phone' | 'email'>;
 
 export interface IEventEmitter {
 	emit: (event: string, data: unknown) => void;
+}
+
+export interface IBasketData {
+	basket: IBasket;
+	addtoBasket(item: IProduct): void;
+	removeFromBasket(item: IProduct): void;
+	getProductsList(): IProduct[];
+	clearBasket(): void;
+	updateBasket(basket: IBasket): void;
+	getTotalPrice(): number | null;
+	getStatusAddingToBasket(item: IProduct): boolean;
 }

@@ -42,6 +42,5 @@ export class Order extends Form<IOrder> {
 		this.toggleClass(this._cashButton, 'button_alt-active', name === 'cash');
 
 		this.onInputChange('payment', name);
-		console.log(this._addressInput.textContent);
 	}
 }
