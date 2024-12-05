@@ -60,7 +60,7 @@ export class Card extends Component<IProduct> {
 	set category(value: string) {
 		this._category.className = this._category.className
 			.split(' ')
-			.filter((cls) => cls === 'card__category')
+			.filter((currentClass) => currentClass === 'card__category')
 			.join(' ');
 		this.setText(this._category, value);
 		switch (value) {
