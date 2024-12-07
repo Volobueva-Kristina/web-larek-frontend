@@ -234,7 +234,6 @@ events.on('contacts:submit', () => {
 		.then((res) => {
 			const success = new Success(cloneTemplate(successTemplate), {
 				onClick: () => {
-					basketData.clearBasket();
 					modal.close();
 				},
 			});
@@ -243,6 +242,7 @@ events.on('contacts:submit', () => {
 					total: basketData.basket.totalPrice.toString(),
 				}),
 			});
+			basketData.clearBasket();
 		})
 		.catch((err) => {
 			console.error(err);
